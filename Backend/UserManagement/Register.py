@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, EmailStr
+from Backend.Utility.CsvManager import read_csv, dump_csv
+import os
 
 router = APIRouter()
 
@@ -10,10 +12,6 @@ class RegisterRequest(BaseModel):
 
 @router.post("/register")
 async def register_user(request: RegisterRequest):
-    # Example logic: check if user exists, then save to CSV (implement your own logic here)
-    from Backend.Utility.CsvManager import read_csv, dump_csv
-    import os
-
     csv_path = "Backend/UserManagement/Users.csv"
     fieldnames = ["Username", "Password", "E-Mail"]
 

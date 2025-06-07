@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Workout Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Changed from height */
+            margin: 0;
+            box-sizing: border-box; /* Added */
+        }
+        .container {
+            background: #fff;
+            padding: 2.5rem 1.2rem; /* Reduced horizontal padding */
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            width: 350px;
+            max-width: 90vw;
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #232526;
+            letter-spacing: 1px;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #414345;
+            font-weight: 500;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #d1d1d1;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f7f7f7;
+            transition: border 0.2s;
+            box-sizing: border-box; /* Add this line */
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #232526;
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(90deg, #232526 0%, #414345 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #414345 0%, #232526 100%);
+        }
+        .switch {
+            text-align: center;
+            margin-top: 1.2rem;
+        }
+        .switch a {
+            color: #232526;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" required autocomplete="current-password">
+            </div>
+            <button class="btn" type="submit">Login</button>
+        </form>
+        <div class="switch">
+            Don't have an account? <a id="show-register">Register</a>
+        </div>
+    </div>
+
+    <div class="container" id="register-container" style="display:none;">
+        <form id="register-form">
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" name="email" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="register-username">Username</label>
+                <input type="text" id="register-username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="register-password">Password</label>
+                <input type="password" id="register-password" name="password" required autocomplete="new-password">
+            </div>
+            <button class="btn" type="submit">Register</button>
+        </form>
+        <div class="switch">
+            Already have an account? <a id="show-login">Login</a>
+        </div>
+    </div>
+
+    <script>
+        const loginContainer = document.getElementById('login-container');
+        const registerContainer = document.getElementById('register-container');
+        document.getElementById('show-register').onclick = () => {
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
+        };
+        document.getElementById('show-login').onclick = () => {
+            registerContainer.style.display = 'none';
+            loginContainer.style.display = 'block';
+        };
+
+        // Prevent default form submission for demo purposes
+        document.getElementById('login-form').onsubmit = e => { e.preventDefault(); /* Handle login */ };
+        document.getElementById('register-form').onsubmit = e => { e.preventDefault(); /* Handle registration */ };
+    </script>
+</body>
+</html>

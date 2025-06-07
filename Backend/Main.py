@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from Backend.UserManagement.Register import router as register_router
 import uvicorn
 import os
@@ -19,6 +20,9 @@ async def root():
 async def serve_login():
     file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../Frontend/Login.html"))
     return FileResponse(file_path, media_type="text/html")
+
+# Serve static files from the Frontend directory at /static
+app.mount("/static", StaticFiles(directory=os.path.abspath(os.path.join(os.path.dirname(__file__), "../Frontend"))), name="static")
 
 # For testing: run with `uvicorn Backend.Main:app --reload`
 if __name__ == "__main__":

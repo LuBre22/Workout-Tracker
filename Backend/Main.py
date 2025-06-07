@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from Backend.UserManagement.Register import router as register_router
+from Backend.UserManagement.Login import router as login_router
 import uvicorn
 import os
 
@@ -9,6 +10,7 @@ app = FastAPI()
 
 # Include the register router
 app.include_router(register_router)
+app.include_router(login_router)
 
 # Redirect root (/) to /login
 @app.get("/")
@@ -19,6 +21,12 @@ async def root():
 @app.get("/login")
 async def serve_login():
     file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../Frontend/Login.html"))
+    return FileResponse(file_path, media_type="text/html")
+
+# Serve dashboard.html at /dashboard
+@app.get("/dashboard")
+async def serve_dashboard():
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../Frontend/Dashboard.html"))
     return FileResponse(file_path, media_type="text/html")
 
 # Serve static files from the Frontend directory at /static

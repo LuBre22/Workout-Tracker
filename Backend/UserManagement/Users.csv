@@ -1,2 +1,3 @@
-Username,Password,E-Mail
-testuser1,123456,test@testmail.com
+Username,Password,E-Mail,Roles
+adminuser,654321,admin@workouts.com,"user|admin"
+testuser1,123456,test@testmail.com,user

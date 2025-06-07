@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Workout Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .dashboard-container {
+            background: #fff;
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            border-radius: 22px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            width: 370px;
+            max-width: 95vw;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .username {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 2.2rem;
+            color: #232526;
+            letter-spacing: 1px;
+        }
+        .btn {
+            width: 90%;
+            padding: 1rem;
+            margin-bottom: 1.1rem;
+            background: linear-gradient(90deg, #232526 0%, #414345 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 2px 8px rgba(31, 38, 135, 0.08);
+        }
+        .btn:last-child {
+            margin-bottom: 0;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #414345 0%, #232526 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        @media (max-width: 500px) {
+            .dashboard-container {
+                padding: 1.2rem 0.5rem;
+                width: 98vw;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="username" id="username-display">Welcome, <span id="username">Guest</span></div>
+        <button class="btn" id="start-session-btn">Start Session</button>
+        <button class="btn" id="view-sessions-btn">View Sessions</button>
+        <button class="btn" id="exercises-btn">Exercises</button>
+        <button class="btn" id="manage-users-btn" style="display:none;">Manage Users</button>
+    </div>
+    <script>
+        // Helper to get cookie value by name
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Set username from cookie
+        const username = getCookie("username");
+        if (username) {
+            document.getElementById('username').textContent = username;
+        }
+
+        // Show "Manage Users" button only for admins
+        const rolesCookie = getCookie("roles");
+        if (rolesCookie) {
+            const roles = rolesCookie.split("|");
+            if (roles.includes("admin")) {
+                document.getElementById('manage-users-btn').style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException, status, Request
-from pydantic import BaseModel
 from typing import List
 import json
 import os

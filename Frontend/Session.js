@@ -15,7 +15,6 @@ function renderSession() {
     exercisesDiv.innerHTML = '';
 
     if (!currentSession) {
-        infoDiv.innerHTML = "<em>No session loaded.</em>";
         document.getElementById('add-exercise-btn').style.display = "none";
         document.getElementById('save-session-btn').style.display = "none";
         document.getElementById('new-session-btn').style.display = "inline-block";
@@ -101,12 +100,31 @@ function renderSession() {
 // Load current session from backend
 async function loadSession() {
     document.getElementById('message').textContent = "";
+    let loggedInUser = null;
+    try {
+        // Fetch current user info
+        const meRes = await fetch('/me');
+        if (meRes.ok) {
+            const me = await meRes.json();
+            loggedInUser = me.username;
+        }
+    } catch {
+        loggedInUser = null;
+    }
+
     try {
         const res = await fetch('/session');
         if (!res.ok) throw new Error();
         currentSession = await res.json();
+        // Check if session belongs to logged-in user
+        if (!loggedInUser || currentSession.username !== loggedInUser) {
+            currentSession = null;
+            document.getElementById('message').textContent = "No session loaded for your user.";
+        }
     } catch {
         currentSession = null;
+        if (!document.getElementById('message').textContent)
+            document.getElementById('message').textContent = "No session loaded.";
     }
     renderSession();
 }

@@ -42,6 +42,7 @@ document.getElementById('manage-users-btn').onclick = function() {
 // Logout button: call backend to invalidate session token and redirect to login
 document.getElementById('logout-btn').onclick = async function() {
     try {
+        await fetch('/session', { method: 'DELETE' });
         await fetch('/logout', { method: 'POST' });
     } catch (e) {
         // Ignore errors, proceed to redirect

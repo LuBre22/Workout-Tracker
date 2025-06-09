@@ -34,8 +34,9 @@ async def create_current_session(session: Session, request: Request):
     return data
 
 @router.get("/session", response_model=Session)
-async def get_current_session():
+async def get_current_session(request: Request):
     SESSION_FILE = "Backend/Entities/Session.json"
+    from Utility.CookieGrabber import get_username_from_request
     # Check if Session.json exists
     if not os.path.exists(SESSION_FILE):
         raise HTTPException(status_code=404, detail="No current session found.")
@@ -46,6 +47,12 @@ async def get_current_session():
             session_data = json.load(f)
         except json.JSONDecodeError:
             raise HTTPException(status_code=404, detail="Session could not be loaded.")
+
+    # Only return if the session belongs to the logged-in user
+    username = get_username_from_request(request)
+    if session_data.get("username") != username:
+        raise HTTPException(status_code=404, detail="No session loaded for your user.")
+
     return session_data
 
 

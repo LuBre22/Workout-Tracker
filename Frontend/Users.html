@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f6fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(31,38,135,0.08);
+            padding: 2rem 2.5rem 2rem 2.5rem;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #232526;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            padding: 0.8rem 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        th {
+            background: #f0f0f0;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f7f7f7;
+        }
+        .btn, button {
+            padding: 0.5rem 1.2rem;
+            background: linear-gradient(90deg, #232526 0%, #414345 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: background 0.2s;
+        }
+        .btn:hover, button:hover {
+            background: linear-gradient(90deg, #414345 0%, #232526 100%);
+        }
+        #back-btn {
+            background: #bbb;
+            color: #232526;
+        }
+        #message {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Management</h1>
+        <div id="message"></div>
+        <table id="users-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button class="btn" id="back-btn" style="background:#bbb;color:#232526;">Back to Dashboard</button>
+    </div>
+    <script src="Users.js"></script>
+</body>
+</html>

@@ -1,16 +1,11 @@
-from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException, status
-from typing import List, Optional
+from typing import List
 import os
 import json
 
-router = APIRouter()
+from Backend.Entities.Models import ExerciseEntry
 
-class ExerciseEntry(BaseModel):
-    name: str
-    equipment: list[str]
-    targetMuscles: list[str]
-    description: str
+router = APIRouter()
 
 EXERCISES_FILE = "Backend/Entities/exercises.json"
 

@@ -4,16 +4,11 @@ from typing import List
 import json
 import os
 
+from Backend.Entities.Models import PersonalRecord
+
 router = APIRouter()
 
 PR_FILE = "Backend/Entities/PersonalRecords.json"
-
-class PersonalRecord(BaseModel):
-    exercise: str
-    weight: float
-    reps: int
-    date: str
-    username: str
 
 # Helper to load/save records
 def load_records() -> List[PersonalRecord]:

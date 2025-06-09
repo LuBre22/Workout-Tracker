@@ -6,25 +6,9 @@ import os
 import json
 from datetime import datetime
 
+from Backend.Entities.Models import Session
+
 router = APIRouter()
-    
-class SetInSession(BaseModel):
-    setNumber: int
-    reps: int
-    weight: float
-    
-class ExerciseInSession(BaseModel):
-    name: str
-    sets: List[SetInSession]
-    
-class Session(BaseModel):
-    id: str
-    username: str
-    name: str
-    timeStart: Optional[datetime] = None
-    timeEnd: Optional[datetime] = None
-    duration: Optional[int] = None  # in minutes
-    exercises: list[ExerciseInSession]
 
 def session_to_dict(session: BaseModel):
     data = session.dict()

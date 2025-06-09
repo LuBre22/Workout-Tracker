@@ -54,18 +54,40 @@
         .btn:hover {
             background: linear-gradient(90deg, #414345 0%, #232526 100%);
         }
+        .exercise-list {
+            max-height: 220px;
+            overflow-y: auto;
+            margin-top: 2rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 0.7rem 0.5rem;
+            background: #fafbfc;
+        }
+        .exercise-item {
+            padding: 0.6rem 0.5rem;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.08rem;
+            color: #232526;
+        }
+        .exercise-item:last-child {
+            border-bottom: none;
+        }
+        #exercise-form {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Create New Exercise</h2>
+        <h2>Exercises</h2>
+        <button class="btn" id="show-create-btn" type="button">Create New Exercise</button>
         <form id="exercise-form">
             <div class="form-group">
                 <label for="exercise-name">Name</label>
                 <input type="text" id="exercise-name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="exercise-equipment">Equipment</label>
+                <label for="exercise-equipment">Equipment (comma separated)</label>
                 <input type="text" id="exercise-equipment" name="equipment" required>
             </div>
             <div class="form-group">
@@ -77,34 +99,13 @@
                 <textarea id="exercise-description" name="description" rows="3" required></textarea>
             </div>
             <button class="btn" type="submit">Create</button>
+            <button class="btn" type="button" id="back-to-list-btn" style="margin-top:0.5rem;background:#bbb;color:#232526;">Back</button>
         </form>
+        <button class="btn" type="button" id="update-exercise-btn" style="display:none;background:#2d8cff;">Update</button>
+        <button class="btn" type="button" id="save-exercise-btn" style="display:none;background:#4caf50;">Save</button>
         <div id="message" style="margin-top:1rem;text-align:center;"></div>
+        <div class="exercise-list" id="exercise-list"></div>
     </div>
-    <script>
-        document.getElementById('exercise-form').onsubmit = async function(e) {
-            e.preventDefault();
-            const name = document.getElementById('exercise-name').value.trim();
-            const equipment = document.getElementById('exercise-equipment').value.trim();
-            const targetMuscles = document.getElementById('exercise-target').value.split(',').map(s => s.trim()).filter(Boolean);
-            const description = document.getElementById('exercise-description').value.trim();
-
-            const response = await fetch('/exercises', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, equipment, targetMuscles, description })
-            });
-
-            const msgDiv = document.getElementById('message');
-            if (response.ok) {
-                msgDiv.textContent = "Exercise created successfully!";
-                msgDiv.style.color = "green";
-                document.getElementById('exercise-form').reset();
-            } else {
-                const error = await response.json();
-                msgDiv.textContent = error.detail || "Failed to create exercise.";
-                msgDiv.style.color = "red";
-            }
-        };
-    </script>
+    <script src="/static/Exercises.js"></script>
 </body>
 </html>

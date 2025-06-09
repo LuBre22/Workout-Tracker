@@ -8,7 +8,7 @@ router = APIRouter()
 
 class ExerciseEntry(BaseModel):
     name: str
-    equipment: str
+    equipment: list[str]
     targetMuscles: list[str]
     description: str
 

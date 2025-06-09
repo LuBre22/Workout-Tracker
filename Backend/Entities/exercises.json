@@ -1,7 +1,10 @@
 [
   {
     "name": "Barbell Bench Press",
-    "equipment": "Barbell",
+    "equipment": [
+      "Barbell",
+      "Bench"
+    ],
     "targetMuscles": [
       "Chest",
       "Triceps",

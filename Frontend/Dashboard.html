@@ -70,8 +70,10 @@
         <div class="username" id="username-display">Welcome, <span id="username">Guest</span></div>
         <button class="btn" id="start-session-btn">Start Session</button>
         <button class="btn" id="view-sessions-btn">View Sessions</button>
+        <button class="btn" id="personal-records-btn">Personal Records</button>
         <button class="btn" id="exercises-btn">Exercises</button>
         <button class="btn" id="manage-users-btn" style="display:none;">Manage Users</button>
+        <button class="btn" id="logout-btn" style="background:#bbb;color:#232526;">Logout</button>
     </div>
     <script>
         // Helper to get cookie value by name
@@ -109,6 +111,19 @@
         // Link View Sessions button to Archive.html
         document.getElementById('view-sessions-btn').onclick = function() {
             window.location.href = "/static/Archive.html";
+        };
+
+        // Link Personal Records button to PersonalRecords.html
+        document.getElementById('personal-records-btn').onclick = function() {
+            window.location.href = "/static/PersonalRecords.html";
+        };
+
+        // Logout button: remove session token and redirect to login
+        document.getElementById('logout-btn').onclick = function() {
+            // Remove cookies by setting expiry in the past
+            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "roles=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = "/login";
         };
     </script>
 </body>

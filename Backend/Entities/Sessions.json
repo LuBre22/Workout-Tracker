@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1749467134954",
+    "username": "user1",
+    "name": "Bench Day",
+    "timeStart": "2025-06-09T11:05:34.954000+00:00",
+    "timeEnd": null,
+    "duration": null,
+    "exercises": [
+      {
+        "name": "Barbell Bench Press",
+        "sets": [
+          {
+            "setNumber": 1,
+            "reps": 10,
+            "weight": 80.0
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Current Session</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f6fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(31,38,135,0.08);
+            padding: 2rem 2.5rem 2rem 2.5rem;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #232526;
+        }
+        .btn {
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(90deg, #232526 0%, #414345 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #414345 0%, #232526 100%);
+        }
+        .exercise-block {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1.2rem;
+            padding: 1rem;
+            background: #fafbfc;
+        }
+        .set-list {
+            margin-left: 1.5rem;
+        }
+        .set-item {
+            margin-bottom: 0.4rem;
+        }
+        .label {
+            font-weight: 600;
+        }
+        .input-row {
+            margin-bottom: 1rem;
+        }
+        .input-row label {
+            display: inline-block;
+            width: 120px;
+        }
+        .input-row input {
+            width: 180px;
+            padding: 0.4rem;
+            margin-right: 1rem;
+        }
+        #message {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Current Session</h2>
+    <div id="session-info"></div>
+    <div id="exercises-list"></div>
+    <button class="btn" id="new-session-btn">Create New Session</button>
+    <button class="btn" id="add-exercise-btn" style="display:none;">Add Exercise</button>
+    <button class="btn" id="save-session-btn" style="display:none;">Save Session</button>
+    <button class="btn" id="back-btn" style="background:#bbb;color:#232526;">Back</button>
+    <div id="message"></div>
+</div>
+
+<!-- Modal for adding exercise -->
+<div id="exercise-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:10;">
+    <div style="background:#fff;max-width:400px;margin:60px auto;padding:2rem;border-radius:10px;position:relative;">
+        <h3>Add Exercise</h3>
+        <div class="input-row">
+            <label for="exercise-name-input">Name:</label>
+            <select id="exercise-name-input"></select>
+        </div>
+        <button class="btn" id="save-exercise-btn" type="button">Save Exercise</button>
+        <button class="btn" id="cancel-exercise-btn" type="button" style="background:#bbb;color:#232526;">Cancel</button>
+    </div>
+</div>
+
+<script src="/static/Session.js"></script>
+</body>
+</html>

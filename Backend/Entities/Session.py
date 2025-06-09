@@ -1,8 +1,10 @@
-from typing import List
+import datetime
+from typing import List, Optional
 from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException, status
 import os
 import json
+from datetime import datetime
 
 router = APIRouter()
     
@@ -19,14 +21,26 @@ class Session(BaseModel):
     id: str
     username: str
     name: str
+    timeStart: Optional[datetime] = None
+    timeEnd: Optional[datetime] = None
+    duration: Optional[int] = None  # in minutes
     exercises: list[ExerciseInSession]
+
+def session_to_dict(session: BaseModel):
+    data = session.dict()
+    # Convert all datetime fields to ISO format if present
+    for key in ["date", "timeStart", "timeEnd"]:
+        if isinstance(data.get(key), datetime):
+            data[key] = data[key].isoformat()
+    return data
 
 @router.post("/session", response_model=Session, status_code=status.HTTP_201_CREATED)
 async def create_current_session(session: Session):
     SESSION_FILE = "Backend/Entities/Session.json"
-    # Add session data to Session.json, creating the file if it doesn't exist
+    # Convert date to ISO string for JSON serialization
+    data = session_to_dict(session)
     with open(SESSION_FILE, "w", encoding="utf-8") as f:
-        json.dump(session.dict(), f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=2)
     return session
 
 @router.get("/session", response_model=Session)
@@ -48,13 +62,11 @@ async def get_current_session():
 @router.put("/session", response_model=Session)
 async def update_current_session(session: Session):
     SESSION_FILE = "Backend/Entities/Session.json"
-    # Check if Session.json exists
     if not os.path.exists(SESSION_FILE):
         raise HTTPException(status_code=404, detail="No current session to update.")
-
-    # Update the session data in Session.json
+    data = session_to_dict(session)
     with open(SESSION_FILE, "w", encoding="utf-8") as f:
-        json.dump(session.dict(), f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=2)
     return session
 
 @router.delete("/session", status_code=status.HTTP_204_NO_CONTENT)
@@ -69,22 +81,27 @@ async def save_current_session():
     SESSION_FILE = "Backend/Entities/Session.json"
     SESSIONS_FILE = "Backend/Entities/Sessions.json"
 
-    # Check if Session.json exists
     if not os.path.exists(SESSION_FILE):
         raise HTTPException(status_code=404, detail="No current session to save.")
 
-    # Load current session
     with open(SESSION_FILE, "r", encoding="utf-8") as f:
         session_data = json.load(f)
 
-    # Load all sessions
+    # Ensure date is a string (if not already)
+    if isinstance(session_data.get("date"), datetime):
+        session_data["date"] = session_data["date"].isoformat()
+
+    # Load all sessions, handle empty or invalid file
+    sessions = []
     if os.path.exists(SESSIONS_FILE):
         with open(SESSIONS_FILE, "r", encoding="utf-8") as f:
-            sessions = json.load(f)
-    else:
-        sessions = []
+            try:
+                content = f.read().strip()
+                if content:
+                    sessions = json.loads(content)
+            except json.JSONDecodeError:
+                sessions = []
 
-    # Append current session
     sessions.append(session_data)
     with open(SESSIONS_FILE, "w", encoding="utf-8") as f:
         json.dump(sessions, f, ensure_ascii=False, indent=2)

@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Barbell Bench Press",
+    "equipment": "Barbell",
+    "targetMuscles": [
+      "Chest",
+      "Triceps",
+      "Shoulder"
+    ],
+    "description": "Flat bench bench press with barbell."
+  }
+]

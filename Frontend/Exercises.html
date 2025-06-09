@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercises - Workout Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f6fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 420px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(31,38,135,0.08);
+            padding: 2rem 2.5rem 2rem 2.5rem;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #232526;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 1rem;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(90deg, #232526 0%, #414345 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #414345 0%, #232526 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create New Exercise</h2>
+        <form id="exercise-form">
+            <div class="form-group">
+                <label for="exercise-name">Name</label>
+                <input type="text" id="exercise-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="exercise-equipment">Equipment</label>
+                <input type="text" id="exercise-equipment" name="equipment" required>
+            </div>
+            <div class="form-group">
+                <label for="exercise-target">Target Muscles (comma separated)</label>
+                <input type="text" id="exercise-target" name="targetMuscles" required>
+            </div>
+            <div class="form-group">
+                <label for="exercise-description">Description</label>
+                <textarea id="exercise-description" name="description" rows="3" required></textarea>
+            </div>
+            <button class="btn" type="submit">Create</button>
+        </form>
+        <div id="message" style="margin-top:1rem;text-align:center;"></div>
+    </div>
+    <script>
+        document.getElementById('exercise-form').onsubmit = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('exercise-name').value.trim();
+            const equipment = document.getElementById('exercise-equipment').value.trim();
+            const targetMuscles = document.getElementById('exercise-target').value.split(',').map(s => s.trim()).filter(Boolean);
+            const description = document.getElementById('exercise-description').value.trim();
+
+            const response = await fetch('/exercises', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, equipment, targetMuscles, description })
+            });
+
+            const msgDiv = document.getElementById('message');
+            if (response.ok) {
+                msgDiv.textContent = "Exercise created successfully!";
+                msgDiv.style.color = "green";
+                document.getElementById('exercise-form').reset();
+            } else {
+                const error = await response.json();
+                msgDiv.textContent = error.detail || "Failed to create exercise.";
+                msgDiv.style.color = "red";
+            }
+        };
+    </script>
+</body>
+</html>

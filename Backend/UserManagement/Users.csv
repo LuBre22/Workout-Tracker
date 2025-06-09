@@ -1,3 +1,2 @@
 Username,Password,E-Mail,Roles
-adminuser,654321,admin@workouts.com,"user|admin"
-testuser1,123456,test@testmail.com,user
+user1,$2b$12$/hY0K8PfV9b14TkZxPLMteQGEDaRsBE4ccw0V9YevRFJSGmeY10Iy,test@testmail.com,"[""user""]"

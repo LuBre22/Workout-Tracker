@@ -1,2 +1,3 @@
 Username,Password,E-Mail,Roles
-user1,$2b$12$jebyJd7jI89ZqjwQoWmEBesPi.sbMKUuIagTBHn0YCEnBO9elqbGW,test@testmail.com,"[""user"", ""admin""]"
+user1,$2b$12$jebyJd7jI89ZqjwQoWmEBesPi.sbMKUuIagTBHn0YCEnBO9elqbGW,test@testmail.com,"[""user""]"
+admin1,$2b$12$Uup2msxKMXqRd/nGA3882u80y2qypcQjR8Zpk9Ruv28kusGHY2vYO,admin@testmail.com,"[""user"", ""admin""]"

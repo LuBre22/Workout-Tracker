@@ -124,3 +124,33 @@ async def delete_user(username: str, request: Request):
     for token in tokens_to_delete:
         del session_store[token]
 
+@router.put("/user/{username}/roles")
+async def update_user_roles(username: str, data: dict, request: Request):
+    # Only allow admins to update roles
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Admin privileges required")
+
+    # Validate roles input
+    roles = data.get("roles")
+    if not isinstance(roles, list) or not all(isinstance(r, str) for r in roles):
+        raise HTTPException(status_code=400, detail="Roles must be a list of strings.")
+
+    # Only allow 'user' and 'admin' as valid roles
+    valid_roles = {"user", "admin"}
+    if not set(roles).issubset(valid_roles):
+        raise HTTPException(status_code=400, detail="Invalid roles specified.")
+
+    csv_path = "Backend/UserManagement/Users.csv"
+    if not os.path.exists(csv_path):
+        raise HTTPException(status_code=404, detail="User database not found.")
+
+    # Update the roles in the CSV
+    import json
+    from Backend.Utility.CsvManager import update_csv
+
+    updated = update_csv(csv_path, "Username", username, {"Roles": json.dumps(roles)})
+
+    if not updated:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    return {"message": "Roles updated.", "roles": roles}

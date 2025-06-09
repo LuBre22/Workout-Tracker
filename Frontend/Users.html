@@ -59,15 +59,74 @@
             background: #bbb;
             color: #232526;
         }
+        #add-user-btn {
+            margin-bottom: 1.2rem;
+            background: #2d8f2d;
+        }
         #message {
             margin-top: 1rem;
             text-align: center;
+        }
+        .role-menu {
+            display: none;
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 1rem;
+            z-index: 100;
+        }
+        .role-menu label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #232526;
+        }
+        .role-menu button {
+            margin-top: 0.5rem;
+            background: #232526;
+            color: #fff;
+        }
+        #add-user-form {
+            display: none;
+            margin-bottom: 1.5rem;
+            background: #f7f7f7;
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 2px 8px rgba(31,38,135,0.06);
+        }
+        #add-user-form input {
+            margin-bottom: 0.7rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            width: 100%;
+            font-size: 1rem;
+        }
+        #add-user-form label {
+            font-weight: 500;
+            color: #232526;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>User Management</h1>
+        <button class="btn" id="add-user-btn">Add New User</button>
+        <form id="add-user-form">
+            <label>Username:<br>
+                <input type="text" id="new-username" required>
+            </label><br>
+            <label>Password:<br>
+                <input type="password" id="new-password" required>
+            </label><br>
+            <label>Email:<br>
+                <input type="email" id="new-email" required>
+            </label><br>
+            <button type="submit" class="btn" style="background:#2d8f2d;">Register</button>
+            <button type="button" id="cancel-add-user" class="btn" style="background:#bbb;color:#232526;">Cancel</button>
+        </form>
         <div id="message"></div>
         <table id="users-table">
             <thead>
@@ -77,9 +136,19 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                <!-- Users will be populated here -->
+            </tbody>
         </table>
         <button class="btn" id="back-btn" style="background:#bbb;color:#232526;">Back to Dashboard</button>
+        <div id="role-menu" class="role-menu">
+            <form id="role-form">
+                <label><input type="checkbox" name="role" value="user"> User</label>
+                <label><input type="checkbox" name="role" value="admin"> Admin</label>
+                <button type="submit" class="btn">Save Roles</button>
+                <button type="button" id="close-role-menu" class="btn" style="background:#bbb;color:#232526;">Cancel</button>
+            </form>
+        </div>
     </div>
     <script src="Users.js"></script>
 </body>

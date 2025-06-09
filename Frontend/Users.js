@@ -178,4 +178,30 @@ document.getElementById("add-user-form").onsubmit = async function(e) {
     }
 };
 
+async function loadAggregateMetrics() {
+    try {
+        const [userRes, sessionRes] = await Promise.all([
+            fetch("/user-count"),
+            fetch("/session-count")
+        ]);
+        if (userRes.ok) {
+            const userData = await userRes.json();
+            document.getElementById("user-count").textContent = userData.count;
+        } else {
+            document.getElementById("user-count").textContent = "-";
+        }
+        if (sessionRes.ok) {
+            const sessionData = await sessionRes.json();
+            document.getElementById("session-count").textContent = sessionData.count;
+        } else {
+            document.getElementById("session-count").textContent = "-";
+        }
+    } catch {
+        document.getElementById("user-count").textContent = "-";
+        document.getElementById("session-count").textContent = "-";
+    }
+}
+
+// Call this when the page loads
+loadAggregateMetrics();
 loadUsers();

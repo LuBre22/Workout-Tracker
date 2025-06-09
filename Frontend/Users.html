@@ -113,6 +113,10 @@
 <body>
     <div class="container">
         <h1>User Management</h1>
+        <div id="aggregate-metrics" style="display:flex;gap:2rem;justify-content:center;margin-bottom:1.5rem;">
+            <div><strong>Registered Users:</strong> <span id="user-count">-</span></div>
+            <div><strong>Total Sessions:</strong> <span id="session-count">-</span></div>
+        </div>
         <button class="btn" id="add-user-btn">Add New User</button>
         <form id="add-user-form">
             <label>Username:<br>

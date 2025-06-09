@@ -177,3 +177,18 @@ async def delete_archived_session(session_id: str):
     # Write the updated sessions back to the file
     with open(SESSIONS_FILE, "w", encoding="utf-8") as f:
         json.dump(new_sessions, f, ensure_ascii=False, indent=2)
+        
+@router.get("/session-count")
+async def session_count(request: Request):
+    from Utility.CookieGrabber import is_admin
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Admin privileges required")
+    SESSIONS_FILE = "Backend/Entities/Sessions.json"
+    if not os.path.exists(SESSIONS_FILE):
+        return {"count": 0}
+    with open(SESSIONS_FILE, "r", encoding="utf-8") as f:
+        try:
+            sessions = json.load(f)
+        except Exception:
+            sessions = []
+    return {"count": len(sessions)}

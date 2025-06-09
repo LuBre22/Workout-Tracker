@@ -108,3 +108,13 @@ async def update_user_roles(username: str, data: dict, request: Request):
         raise HTTPException(status_code=404, detail="User not found.")
 
     return {"message": "Roles updated.", "roles": roles}
+
+@router.get("/user-count")
+async def user_count(request: Request):
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Admin privileges required")
+    csv_path = "Backend/UserManagement/Users.csv"
+    if not os.path.exists(csv_path):
+        return {"count": 0}
+    users = read_csv(csv_path)
+    return {"count": len(users)}

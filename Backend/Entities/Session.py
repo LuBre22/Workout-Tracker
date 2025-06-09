@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException, status
@@ -87,9 +87,20 @@ async def save_current_session():
     with open(SESSION_FILE, "r", encoding="utf-8") as f:
         session_data = json.load(f)
 
-    # Ensure date is a string (if not already)
-    if isinstance(session_data.get("date"), datetime):
-        session_data["date"] = session_data["date"].isoformat()
+    # Set timeEnd to now and calculate duration
+    now = datetime.now(timezone.utc).isoformat()
+    session_data["timeEnd"] = now
+
+    time_start = session_data.get("timeStart")
+    if time_start:
+        try:
+            dt_start = datetime.fromisoformat(time_start)
+            dt_end = datetime.fromisoformat(now)
+            session_data["duration"] = int((dt_end - dt_start).total_seconds() // 60)
+        except Exception:
+            session_data["duration"] = None
+    else:
+        session_data["duration"] = None
 
     # Load all sessions, handle empty or invalid file
     sessions = []

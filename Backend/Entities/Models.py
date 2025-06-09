@@ -20,9 +20,9 @@ class ExerciseInSession(BaseModel):
     
 class Session(BaseModel):
     id: str
-    username: str
+    username: Optional[str] = None
     name: str
-    timeStart: Optional[datetime] = None
+    timeStart: str
     timeEnd: Optional[datetime] = None
     duration: Optional[int] = None  # in minutes
     exercises: list[ExerciseInSession]
@@ -32,4 +32,4 @@ class PersonalRecord(BaseModel):
     weight: float
     reps: int
     date: str
-    username: str
+    username: Optional[str] = None

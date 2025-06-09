@@ -1,10 +1,11 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Request
 from pydantic import BaseModel
 from typing import List
 import json
 import os
 
 from Backend.Entities.Models import PersonalRecord
+from Utility.CookieGrabber import get_username_from_request
 
 router = APIRouter()
 
@@ -33,37 +34,48 @@ async def create_personal_record(record: PersonalRecord):
     save_records(records)
     return record
 
-# Get all personal records for a user
+# Get all personal records for the logged-in user
 @router.get("/personal-records", response_model=List[PersonalRecord])
-async def get_personal_records(username: str):
+async def get_personal_records(request: Request):
+    from Backend.UserManagement.Login import session_store
+    session_token = request.cookies.get("session_token")
+    if not session_token or session_token not in session_store:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    username = session_store[session_token]["username"]
     records = load_records()
     return [r for r in records if r.username == username]
 
-# Update a personal record (by exercise, username)
+# Update a personal record (by exercise, for logged-in user)
 @router.put("/personal-records", response_model=PersonalRecord)
-async def update_personal_record(record: PersonalRecord):
+async def update_personal_record(record: PersonalRecord, request: Request):
+    username = get_username_from_request(request)
     records = load_records()
     for idx, r in enumerate(records):
         if (
             r.exercise == record.exercise and
-            r.username == record.username
+            r.username == username
         ):
+            # Overwrite username to ensure only the logged-in user can update their record
+            record.username = username
             records[idx] = record
             save_records(records)
             return record
     raise HTTPException(status_code=404, detail="Personal record not found.")
 
-# Delete a personal record (by exercise, username, date)
+# Delete a personal record (by exercise, for logged-in user)
 @router.delete("/personal-records", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_personal_record(exercise: str, username: str):
+async def delete_personal_record(exercise: str, request: Request):
+    username = get_username_from_request(request)
     records = load_records()
     new_records = [r for r in records if not (r.exercise == exercise and r.username == username)]
     if len(new_records) == len(records):
         raise HTTPException(status_code=404, detail="Personal record not found.")
     save_records(new_records)
 
+# Update PRs from sessions (for logged-in user)
 @router.post("/personal-records/update")
-async def update_personal_records_from_sessions(username: str):
+async def update_personal_records_from_sessions(request: Request):
+    username = get_username_from_request(request)
     SESSIONS_FILE = "Backend/Entities/Sessions.json"
     EXERCISES_FILE = "Backend/Entities/exercises.json"
 

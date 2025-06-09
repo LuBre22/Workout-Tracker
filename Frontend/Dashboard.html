@@ -75,56 +75,6 @@
         <button class="btn" id="manage-users-btn" style="display:none;">Manage Users</button>
         <button class="btn" id="logout-btn" style="background:#bbb;color:#232526;">Logout</button>
     </div>
-    <script>
-        // Helper to get cookie value by name
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
-        // Set username from cookie
-        const username = getCookie("username");
-        if (username) {
-            document.getElementById('username').textContent = username;
-        }
-
-        // Show "Manage Users" button only for admins
-        const rolesCookie = getCookie("roles");
-        if (rolesCookie) {
-            const roles = rolesCookie.split("|");
-            if (roles.includes("admin")) {
-                document.getElementById('manage-users-btn').style.display = "block";
-            }
-        }
-
-        // Link Exercises button to Exercises.html
-        document.getElementById('exercises-btn').onclick = function() {
-            window.location.href = "/static/Exercises.html";
-        };
-
-        // Link Start Session button to Session.html
-        document.getElementById('start-session-btn').onclick = function() {
-            window.location.href = "/static/Session.html";
-        };
-
-        // Link View Sessions button to Archive.html
-        document.getElementById('view-sessions-btn').onclick = function() {
-            window.location.href = "/static/Archive.html";
-        };
-
-        // Link Personal Records button to PersonalRecords.html
-        document.getElementById('personal-records-btn').onclick = function() {
-            window.location.href = "/static/PersonalRecords.html";
-        };
-
-        // Logout button: remove session token and redirect to login
-        document.getElementById('logout-btn').onclick = function() {
-            // Remove cookies by setting expiry in the past
-            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            document.cookie = "roles=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            window.location.href = "/login";
-        };
-    </script>
+    <script src="/static/Dashboard.js"></script>
 </body>
 </html>

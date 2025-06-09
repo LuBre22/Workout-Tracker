@@ -113,7 +113,6 @@ async function loadSession() {
 
 // Create new session
 document.getElementById('new-session-btn').onclick = async function() {
-    const username = getCookie("username");
     let name = prompt("Enter session name:");
     const id = Date.now().toString();
     const timeStart = new Date().toISOString();
@@ -124,13 +123,12 @@ document.getElementById('new-session-btn').onclick = async function() {
         name = prompt("Session name can only contain letters, numbers, spaces, dashes, underscores, and parentheses. Please enter a valid session name:");
     }
 
-    if (!username || !name) {
-        document.getElementById('message').textContent = "Username or valid session name missing.";
+    if (!name) {
+        document.getElementById('message').textContent = "Valid session name missing.";
         return;
     }
     currentSession = {
         id,
-        username,
         name,
         timeStart,
         timeEnd: null,

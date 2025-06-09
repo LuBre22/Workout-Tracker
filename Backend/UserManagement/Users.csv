@@ -1,2 +1,2 @@
 Username,Password,E-Mail,Roles
-user1,$2b$12$/hY0K8PfV9b14TkZxPLMteQGEDaRsBE4ccw0V9YevRFJSGmeY10Iy,test@testmail.com,"[""user""]"
+user1,$2b$12$/hY0K8PfV9b14TkZxPLMteQGEDaRsBE4ccw0V9YevRFJSGmeY10Iy,test@testmail.com,"[""user"", ""admin""]"

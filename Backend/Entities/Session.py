@@ -1,12 +1,13 @@
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import List
 from pydantic import BaseModel
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Request
 import os
 import json
 from datetime import datetime
 
 from Backend.Entities.Models import Session
+from Utility.CookieGrabber import get_username_from_request
 
 router = APIRouter()
 
@@ -19,13 +20,18 @@ def session_to_dict(session: BaseModel):
     return data
 
 @router.post("/session", response_model=Session, status_code=status.HTTP_201_CREATED)
-async def create_current_session(session: Session):
+async def create_current_session(session: Session, request: Request):
     SESSION_FILE = "Backend/Entities/Session.json"
     # Convert date to ISO string for JSON serialization
     data = session_to_dict(session)
+
+    # Get username from session cookie
+    username = get_username_from_request(request)
+    data["username"] = username
+
     with open(SESSION_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    return session
+    return data
 
 @router.get("/session", response_model=Session)
 async def get_current_session():
@@ -108,8 +114,12 @@ async def save_current_session():
     return session_data
 
 @router.get("/sessions", response_model=List[Session])
-async def get_archived_sessions(username: str):
+async def get_archived_sessions(request: Request):
     SESSIONS_FILE = "Backend/Entities/Sessions.json"
+    
+    # Get username from session cookie
+    username = get_username_from_request(request)
+    
     # Check if Sessions.json exists
     if not os.path.exists(SESSIONS_FILE):
         return []

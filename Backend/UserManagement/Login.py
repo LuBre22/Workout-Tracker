@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from Backend.Utility.CsvManager import read_csv
 from fastapi.responses import JSONResponse
 import os
+import bcrypt
 
 router = APIRouter()
 
@@ -18,7 +19,7 @@ async def login_user(request: LoginRequest):
 
     users = read_csv(csv_path)
     for user in users:
-        if user["Username"] == request.username and user["Password"] == request.password:
+        if user["Username"] == request.username and bcrypt.checkpw(request.password.encode('utf-8'), user["Password"].encode('utf-8')):
             roles_list = [role.strip() for role in user["Roles"].split("|") if role.strip()]
             response = JSONResponse({"message": "Login successful"})
             response.set_cookie(key="username", value=request.username, httponly=False)

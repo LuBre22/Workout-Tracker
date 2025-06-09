@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Helper function to validate username and password (A-Z, a-z, 0-9)
+    function isValidInput(str) {
+        return /^[A-Za-z0-9]+$/.test(str);
+    }
+
     // Register form handler
     const registerForm = document.getElementById('register-form');
     if (registerForm) {
@@ -7,6 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('register-email').value;
             const username = document.getElementById('register-username').value;
             const password = document.getElementById('register-password').value;
+
+            // Validate username and password
+            if (!isValidInput(username) || !isValidInput(password)) {
+                alert('Username and password may only contain letters and numbers (A-Z, a-z, 0-9).');
+                return;
+            }
 
             try {
                 const response = await fetch('/register', {
@@ -36,6 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
+
+            // Validate username and password
+            if (!isValidInput(username) || !isValidInput(password)) {
+                alert('Username and password may only contain letters and numbers (A-Z, a-z, 0-9).');
+                return;
+            }
 
             try {
                 const response = await fetch('/login', {

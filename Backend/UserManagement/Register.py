@@ -3,6 +3,7 @@ from pydantic import BaseModel, EmailStr
 from Backend.Utility.CsvManager import read_csv, dump_csv
 import os
 import json
+import bcrypt
 
 router = APIRouter()
 
@@ -27,10 +28,13 @@ async def register_user(request: RegisterRequest):
         if user["Username"] == request.username or user["E-Mail"] == request.email:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username or email already exists.")
 
+    # Hash the password with bcrypt
+    hashed_password = bcrypt.hashpw(request.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
     # Add new user with default "user" role
     users.append({
         "Username": request.username,
-        "Password": request.password,  # In production, hash the password!
+        "Password": hashed_password,
         "E-Mail": request.email,
         "Roles": json.dumps(["user"])
     })

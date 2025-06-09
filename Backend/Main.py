@@ -3,7 +3,8 @@ from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from Backend.UserManagement.Register import router as register_router
 from Backend.UserManagement.Login import router as login_router
-from Backend.Entities.Exercises import router as exercises_router
+from Backend.Entities.Exercise import router as exercises_router
+from Backend.Entities.Session import router as session_router
 import uvicorn
 import os
 
@@ -13,6 +14,7 @@ app = FastAPI()
 app.include_router(register_router)
 app.include_router(login_router)
 app.include_router(exercises_router)
+app.include_router(session_router)
 
 # Redirect root (/) to /login
 @app.get("/")

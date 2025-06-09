@@ -7,7 +7,7 @@ import json
 from datetime import datetime
 
 from Backend.Entities.Models import Session
-from Utility.CookieGrabber import get_username_from_request
+from Backend.Utility.CookieGrabber import get_username_from_request
 
 router = APIRouter()
 

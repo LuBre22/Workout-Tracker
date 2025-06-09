@@ -4,7 +4,7 @@ import json
 import os
 
 from Backend.Entities.Models import PersonalRecord
-from Utility.CookieGrabber import get_username_from_request
+from Backend.Utility.CookieGrabber import get_username_from_request
 
 router = APIRouter()
 

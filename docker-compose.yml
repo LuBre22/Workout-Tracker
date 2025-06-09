@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Backend:/app/Backend
+      - ./Frontend:/app/Frontend
+      - ./Backend/UserManagement/Users.csv:/app/Backend/UserManagement/Users.csv
+      - ./Backend/Entities/Sessions.json:/app/Backend/Entities/Sessions.json
+      # Add more volumes if you want to persist other files
+    environment:
+      - PYTHONUNBUFFERED=1

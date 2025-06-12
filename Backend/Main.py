@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from Backend.UserManagement.Register import router as register_router
@@ -9,6 +9,8 @@ from Backend.Entities.Session import router as session_router
 from Backend.Entities.PersonalRecord import router as personalrecord_router
 import uvicorn
 import os
+
+from Backend.Utility.CookieGrabber import is_admin
 
 app = FastAPI()
 
@@ -35,6 +37,13 @@ async def serve_login():
 @app.get("/dashboard")
 async def serve_dashboard():
     file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../Frontend/Dashboard.html"))
+    return FileResponse(file_path, media_type="text/html")
+
+@app.get("/manage-users")
+async def serve_users(request: Request):
+    if not is_admin(request):
+        raise HTTPException(status_code=403, detail="Admins only")
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../Frontend/Users.html"))
     return FileResponse(file_path, media_type="text/html")
 
 # Serve static files from the Frontend directory at /static

@@ -36,7 +36,7 @@ document.getElementById('personal-records-btn').onclick = function() {
 
 // Link Manage Users button to Users.html (only visible for admin)
 document.getElementById('manage-users-btn').onclick = function() {
-    window.location.href = "/static/Users.html";
+    window.location.href = "/manage-users";
 };
 
 // Logout button: call backend to invalidate session token and redirect to login

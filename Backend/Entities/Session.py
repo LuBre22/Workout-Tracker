@@ -45,7 +45,7 @@ async def create_current_session(session: Session, request: Request):
 @router.get("/session", response_model=Session)
 async def get_current_session(request: Request):
     SESSION_FILE = "Backend/Entities/Session.json"
-    from Utility.CookieGrabber import get_username_from_request
+    from Backend.Utility.CookieGrabber import get_username_from_request
     # Check if Session.json exists
     if not os.path.exists(SESSION_FILE):
         raise HTTPException(status_code=404, detail="No current session found.")

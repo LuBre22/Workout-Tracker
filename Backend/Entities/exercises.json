@@ -11,5 +11,18 @@
       "Shoulder"
     ],
     "description": "Flat bench bench press with barbell."
+  },
+  {
+    "name": "Deadlift",
+    "equipment": [
+      "Barbell"
+    ],
+    "targetMuscles": [
+      "Quads",
+      "Hamstrings",
+      "Lower Back",
+      "Lats"
+    ],
+    "description": "Lift the barbell off the ground"
   }
 ]

@@ -2,6 +2,7 @@ import json
 import secrets
 import os
 import bcrypt
+import re
 
 from fastapi import APIRouter, HTTPException, Request, status, Response
 from pydantic import BaseModel
@@ -22,6 +23,13 @@ async def login_user(request: LoginRequest, response: Response):
     csv_path = "Backend/UserManagement/Users.csv"
     if not os.path.exists(csv_path):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No users found.")
+
+    # RegEx check for username and password
+    pattern = re.compile(r"^[A-Za-z0-9]+$")
+    if not pattern.fullmatch(request.username):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username may only contain letters and numbers (A-Z, a-z, 0-9).")
+    if not pattern.fullmatch(request.password):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Password may only contain letters and numbers (A-Z, a-z, 0-9).")
 
     users = read_csv(csv_path)
     for user in users:

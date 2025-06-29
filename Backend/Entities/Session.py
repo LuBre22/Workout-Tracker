@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, status, Request
 import os
 import json
 from datetime import datetime
+import re
 
 from Backend.Entities.Models import Session
 from Backend.Utility.CookieGrabber import get_username_from_request
@@ -22,6 +23,14 @@ def session_to_dict(session: BaseModel):
 @router.post("/session", response_model=Session, status_code=status.HTTP_201_CREATED)
 async def create_current_session(session: Session, request: Request):
     SESSION_FILE = "Backend/Entities/Session.json"
+    # RegEx check for session name (only letters, numbers, spaces, dashes, underscores, parentheses)
+    name_pattern = re.compile(r"^[\w\s\-()]+$")
+    if not name_pattern.fullmatch(session.name):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Session name can only contain letters, numbers, spaces, dashes, underscores, and parentheses."
+        )
+
     # Convert date to ISO string for JSON serialization
     data = session_to_dict(session)
 

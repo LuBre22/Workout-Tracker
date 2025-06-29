@@ -67,15 +67,30 @@ document.getElementById('show-create-btn').onclick = function() {
     document.getElementById('message').textContent = "";
 };
 
+function isValidInput(str) {
+    // Only letters, numbers, and spaces
+    return /^[A-Za-z0-9\s]+$/.test(str);
+}
+
 document.getElementById('exercise-form').onsubmit = async function(e) {
     e.preventDefault();
-    // Only allow submit if not disabled (i.e., in create mode)
     if (document.querySelector('#exercise-form button[type="submit"]').style.display === "none") return;
 
     const name = document.getElementById('exercise-name').value.trim();
     const equipment = document.getElementById('exercise-equipment').value.split(',').map(s => s.trim()).filter(Boolean);
     const targetMuscles = document.getElementById('exercise-target').value.split(',').map(s => s.trim()).filter(Boolean);
     const description = document.getElementById('exercise-description').value.trim();
+
+    // RegEx check for all fields
+    if (!isValidInput(name) ||
+        equipment.some(eq => !isValidInput(eq)) ||
+        targetMuscles.some(tm => !isValidInput(tm)) ||
+        (description && !isValidInput(description))) {
+        const msgDiv = document.getElementById('message');
+        msgDiv.textContent = "All fields may only contain letters, numbers, and spaces.";
+        msgDiv.style.color = "red";
+        return;
+    }
 
     const response = await fetch('/exercises', {
         method: 'POST',
@@ -88,11 +103,10 @@ document.getElementById('exercise-form').onsubmit = async function(e) {
         msgDiv.textContent = "Exercise created successfully!";
         msgDiv.style.color = "green";
         document.getElementById('exercise-form').reset();
-        // Hide form, show list and button again
         document.getElementById('exercise-form').style.display = "none";
         document.getElementById('exercise-list').style.display = "block";
         document.getElementById('show-create-btn').style.display = "block";
-        loadExercises(); // Refresh the list
+        loadExercises();
     } else {
         const error = await response.json();
         msgDiv.textContent = error.detail || "Failed to create exercise.";
@@ -134,6 +148,17 @@ document.getElementById('save-exercise-btn').onclick = async function() {
     const targetMuscles = document.getElementById('exercise-target').value.split(',').map(s => s.trim()).filter(Boolean);
     const description = document.getElementById('exercise-description').value.trim();
 
+    // RegEx check for all fields
+    if (!isValidInput(name) ||
+        equipment.some(eq => !isValidInput(eq)) ||
+        targetMuscles.some(tm => !isValidInput(tm)) ||
+        (description && !isValidInput(description))) {
+        const msgDiv = document.getElementById('message');
+        msgDiv.textContent = "All fields may only contain letters, numbers, and spaces.";
+        msgDiv.style.color = "red";
+        return;
+    }
+
     const response = await fetch(`/exercises/${encodeURIComponent(currentName)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -145,7 +170,6 @@ document.getElementById('save-exercise-btn').onclick = async function() {
         msgDiv.textContent = "Exercise updated successfully!";
         msgDiv.style.color = "green";
         document.getElementById('exercise-form').removeAttribute('data-current-name');
-        // After save, go back to list
         document.getElementById('exercise-form').style.display = "none";
         document.getElementById('exercise-list').style.display = "block";
         document.getElementById('show-create-btn').style.display = "block";

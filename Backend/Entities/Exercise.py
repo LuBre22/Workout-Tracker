@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 from typing import List
 import os
 import json
+import re
 
 from Backend.Entities.Models import ExerciseEntry
 
@@ -34,6 +35,34 @@ async def get_exercise(name: str):
 
 @router.post("/exercises", response_model=ExerciseEntry, status_code=status.HTTP_201_CREATED)
 async def create_exercise(entry: ExerciseEntry):
+    # RegEx check for all fields: allow letters, numbers, spaces, and common sentence punctuation
+    field_pattern = re.compile(r"^[A-Za-z0-9\s.,!?;:'\"()\-\[\]]+$")
+
+    # Check name
+    if not field_pattern.fullmatch(entry.name):
+        raise HTTPException(
+            status_code=400,
+            detail="Exercise name may only contain letters, numbers, spaces, and common punctuation (.,!?;:'\"()-[])."
+        )
+    # Check equipment
+    if any(not field_pattern.fullmatch(eq) for eq in entry.equipment):
+        raise HTTPException(
+            status_code=400,
+            detail="Each equipment entry may only contain letters, numbers, spaces, and common punctuation (.,!?;:'\"()-[])."
+        )
+    # Check targetMuscles
+    if any(not field_pattern.fullmatch(tm) for tm in entry.targetMuscles):
+        raise HTTPException(
+            status_code=400,
+            detail="Each target muscle entry may only contain letters, numbers, spaces, and common punctuation (.,!?;:'\"()-[])."
+        )
+    # Check description (allow empty, but if present, must match)
+    if entry.description and not field_pattern.fullmatch(entry.description):
+        raise HTTPException(
+            status_code=400,
+            detail="Description may only contain letters, numbers, spaces, and common punctuation (.,!?;:'\"()-[])."
+        )
+
     exercises = load_exercises()
     if any(e.name.lower() == entry.name.lower() for e in exercises):
         raise HTTPException(status_code=400, detail="Exercise with this name already exists")
@@ -43,6 +72,30 @@ async def create_exercise(entry: ExerciseEntry):
 
 @router.put("/exercises/{name}", response_model=ExerciseEntry)
 async def update_exercise(name: str, entry: ExerciseEntry):
+    # RegEx check for all fields: allow letters, numbers, spaces, and common sentence punctuation
+    field_pattern = re.compile(r"^[A-Za-z0-9\s.,!?;:'\"()\-\[\]]+$")
+
+    if not field_pattern.fullmatch(entry.name):
+        raise HTTPException(
+            status_code=400,
+            detail="Exercise name may only contain letters, numbers, spaces, and common punctuation (.,!?;:'\"()-[])."
+        )
+    if any(not field_pattern.fullmatch(eq) for eq in entry.equipment):
+        raise HTTPException(
+            status_code=400,
+            detail="Each equipment entry may only contain letters, numbers, spaces, and common punctuation (.,!?;:'\"()-[])."
+        )
+    if any(not field_pattern.fullmatch(tm) for tm in entry.targetMuscles):
+        raise HTTPException(
+            status_code=400,
+            detail="Each target muscle entry may only contain letters, numbers, spaces, and common punctuation (.,!?;:'\"()-[])."
+        )
+    if entry.description and not field_pattern.fullmatch(entry.description):
+        raise HTTPException(
+            status_code=400,
+            detail="Description may only contain letters, numbers, spaces, and common punctuation (.,!?;:'\"()-[])."
+        )
+
     exercises = load_exercises()
     for idx, exercise in enumerate(exercises):
         if exercise.name.lower() == name.lower():

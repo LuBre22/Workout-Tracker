@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Helper function to validate username and password (A-Z, a-z, 0-9)
-    function isValidInput(str) {
+    // Helper function to validate username (A-Z, a-z, 0-9)
+    function isValidUsername(str) {
         return /^[A-Za-z0-9]+$/.test(str);
+    }
+    // Helper function to validate password (letters, numbers, and common special characters)
+    function isValidPassword(str) {
+        return /^[A-Za-z0-9!@#$%^&*()_\-+=\[\]{}|;:,.<>?/`~]+$/.test(str);
     }
 
     // Register form handler
@@ -14,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('register-password').value;
 
             // Validate username and password
-            if (!isValidInput(username) || !isValidInput(password)) {
-                alert('Username and password may only contain letters and numbers (A-Z, a-z, 0-9).');
+            if (!isValidUsername(username) || !isValidPassword(password)) {
+                alert('Username may only contain letters and numbers (A-Z, a-z, 0-9). Password may contain letters, numbers, and common special characters.');
                 return;
             }
 
@@ -49,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('login-password').value;
 
             // Validate username and password
-            if (!isValidInput(username) || !isValidInput(password)) {
-                alert('Username and password may only contain letters and numbers (A-Z, a-z, 0-9).');
+            if (!isValidUsername(username) || !isValidPassword(password)) {
+                alert('Username may only contain letters and numbers (A-Z, a-z, 0-9). Password may contain letters, numbers, and common special characters.');
                 return;
             }
 

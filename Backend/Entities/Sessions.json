@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1751196034851",
+    "username": "user1",
+    "name": "Bench Day",
+    "timeStart": "2025-06-29T11:20:34.851Z",
+    "timeEnd": "2025-06-29T11:57:44.595545+00:00",
+    "duration": 37,
+    "exercises": [
+      {
+        "name": "Barbell Bench Press",
+        "sets": [
+          {
+            "setNumber": 1,
+            "reps": 12,
+            "weight": 20.0
+          },
+          {
+            "setNumber": 2,
+            "reps": 7,
+            "weight": 50.0
+          },
+          {
+            "setNumber": 3,
+            "reps": 5,
+            "weight": 60.0
+          },
+          {
+            "setNumber": 4,
+            "reps": 10,
+            "weight": 80.0
+          },
+          {
+            "setNumber": 5,
+            "reps": 8,
+            "weight": 80.0
+          },
+          {
+            "setNumber": 6,
+            "reps": 7,
+            "weight": 80.0
+          },
+          {
+            "setNumber": 7,
+            "reps": 10,
+            "weight": 70.0
+          },
+          {
+            "setNumber": 8,
+            "reps": 10,
+            "weight": 70.0
+          }
+        ]
+      }
+    ]
+  }
+]
